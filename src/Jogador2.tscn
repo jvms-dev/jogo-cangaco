@@ -1,0 +1,118 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://src/Jogador2.gd" type="Script" id=1]
+[ext_resource path="res://src/Mira.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/IndicadorDirecionalDano.tscn" type="PackedScene" id=3]
+[ext_resource path="res://arte/3d/revolve_colt.glb" type="PackedScene" id=4]
+[ext_resource path="res://src/IndicadorVida.tscn" type="PackedScene" id=5]
+[ext_resource path="res://arte/3d/robo.glb" type="PackedScene" id=6]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.5
+
+[sub_resource type="Animation" id=2]
+resource_name = "mirar"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Guinada/SpringArm:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"update": 3,
+"values": [ Vector3( 0, 0, -1.54951 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Guinada:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"update": 3,
+"values": [ Vector3( -1.60695, 1.32957, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "padrao"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Guinada:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 3,
+"values": [ Vector3( 0, 0.585007, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Guinada/SpringArm:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"update": 3,
+"values": [ Vector3( 0, 0, -4 ) ]
+}
+
+[node name="Jogador2" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="MalhaBase" type="Spatial" parent="."]
+
+[node name="robo" parent="MalhaBase" instance=ExtResource( 6 )]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+
+[node name="Skeleton" parent="MalhaBase/robo/Armature" index="0"]
+bones/5/bound_children = [ NodePath("BoneAttachment") ]
+
+[node name="BoneAttachment" type="BoneAttachment" parent="MalhaBase/robo/Armature/Skeleton" index="1"]
+transform = Transform( -0.220838, 0.429306, 0.875744, -0.975311, -0.0972074, -0.198293, 2.05548e-07, -0.897913, 0.440174, -1.56415, -0.731135, 0.159809 )
+bone_name = "thumb_2_r"
+
+[node name="revolve_colt" parent="MalhaBase/robo/Armature/Skeleton/BoneAttachment" instance=ExtResource( 4 )]
+transform = Transform( -0.110419, 0.0135567, 0.487467, 0.214653, -0.447431, 0.0610657, 0.437872, 0.222758, 0.09299, 1.11507, -0.129963, 0.170819 )
+
+[node name="Arfagem" type="Spatial" parent="."]
+
+[node name="Guinada" type="Spatial" parent="Arfagem"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.622787, 0 )
+
+[node name="SpringArm" type="ClippedCamera" parent="Arfagem/Guinada"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, -4 )
+
+[node name="AnimacoesCamera" type="AnimationPlayer" parent="Arfagem"]
+anims/mirar = SubResource( 2 )
+anims/padrao = SubResource( 3 )
+
+[node name="Mira" parent="." instance=ExtResource( 2 )]
+visible = false
+
+[node name="IndicadorDirecionalDano" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IndicadorVida" parent="." instance=ExtResource( 5 )]
+
+[editable path="MalhaBase/robo"]

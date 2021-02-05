@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://arte/2d/textura_indicador_direcional_dano.png" type="Texture" id=1]
+[ext_resource path="res://src/IndicadorDirecionalDano.gd" type="Script" id=2]
+
+[node name="IndicadorDirecionalDano" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Textura" type="Sprite" parent="."]
+position = Vector2( 0, -200 )
+texture = ExtResource( 1 )
